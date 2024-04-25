@@ -6,20 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Race Strategy</title>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        body {
+            background-color: Lavender;
         }
 
-        table,
-        th,
-        td {
+        .center-table {
+            text-align: center;
+        }
+
+        .center-table table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        .center-table th,
+        .center-table td {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
         }
 
-        th {
+        .center-table th {
             background-color: lightgray;
         }
     </style>
@@ -27,184 +35,185 @@
 
 <body>
     <label for="ctSelector">CT:</label>
-    <input type="number" id="ctSelector" value="50" min="1" step="1" style="width: 40px;">
+    <input type="number" id="ctSelector" value="50" min="0" max="100" step="1" style="width: 40px;">
 
     <label for="pitTimeSelector">Expected Pit Time:</label>
     <input type="number" id="pitTimeSelector" value="20" min="0" step="0.5" style="width: 45px;">
+    <div class="center-table">
+        <table>
+            <caption>Rough Strategy</caption>
+            <tr>
+                <th rowspan="2">tyres</th>
+                <th rowspan="2">fuel / km</th>
+                <th rowspan="2">fuel / lap</th>
+                <th rowspan="2">tyres / km</th>
+                <th rowspan="2">tyres / lap</th>
+                <th colspan="4">stint</th>
 
-    <table>
-        <caption>Rough Strategy</caption>
-        <tr>
-            <th rowspan="2">tyres</th>
-            <th rowspan="2">fuel / km</th>
-            <th rowspan="2">fuel / lap</th>
-            <th rowspan="2">tyres / km</th>
-            <th rowspan="2">tyres / lap</th>
-            <th colspan="4">stint</th>
+                <th rowspan="2">pitstops</th>
+                <th colspan="5">time loss</th>
 
-            <th rowspan="2">pitstops</th>
-            <th colspan="4">time loss</th>
+                <!-- <th>time gain</th> -->
+                <!-- <th>total</th> -->
+            </tr>
+            <tr>
+                <th>km</th>
+                <th>laps</th>
+                <th>fuel</th>
+                <th>tyres</th>
+                <th>pits</th>
+                <th>fuel load</th>
+                <th>TCD</th>
+                <th>tyres wear</th>
+                <th>TOTAL:</th>
+            </tr>
+            <tr>
+                <td>extra soft</td>
+                <td>dry_fuel_per_km</td>
+                <td>dry_fuel_per_lap</td>
+                <td id="xs_tyres_per_km">xs_tyres_per_km</td>
+                <td id="xs_tyres_per_lap">xs_tyres_per_lap</td>
+                <td id="xs_stint_km">xs_stint_km</td>
+                <td id="XS_laps">XS_laps</td>
+                <td id="xs_stint_fuel">xs_stint_fuel</td>
+                <td id="xs_stint_tyres">xs_stint_tyres</td>
+                <td>
+                    <select id="xsPitsSelect" onchange="updateXsPits()">
+                        <!-- Opcje menu -->
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </td>
+                <td id="xs_pit_time_loss">xs_pit_time_loss</td>
+                <td id="xs_fuel_time_loss">xs_fuel_time_loss</td>
+                <td id="xs_tcd_time_loss">xs_tcd_time_loss</td>
+                <td id="xs_tyres_wear_time_loss">xs_tyres_wear_time_loss</td>
+                <td id="xs_total_time_loss">xs_total_time_loss</td>
 
-            <th>time gain</th>
-            <th rowspan="2">total</th>
-        </tr>
-        <tr>
-            <th>km</th>
-            <th>laps</th>
-            <th>fuel</th>
-            <th>tyres</th>
-            <th>pits</th>
-            <th>fuel load</th>
-            <th>TCD</th>
-            <th>tyres wear</th>
-            <th>CT gain</th>
-        </tr>
-        <tr>
-            <td>extra soft</td>
-            <td>dry_fuel_per_km</td>
-            <td>dry_fuel_per_lap</td>
-            <td id="xs_tyres_per_km">xs_tyres_per_km</td>
-            <td id="xs_tyres_per_lap">xs_tyres_per_lap</td>
-            <td id="xs_stint_km">xs_stint_km</td>
-            <td id="XS_laps">XS_laps</td>
-            <td id="xs_stint_fuel">xs_stint_fuel</td>
-            <td id="xs_stint_tyres">xs_stint_tyres</td>
-            <td>
-                <select id="xsPitsSelect" onchange="updateXsPits()">
-                    <!-- Opcje menu -->
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </td>
-            <td id="xs_pit_time_loss">xs_pit_time_loss</td>
-            <td>Wiersz 12</td>
-            <td>Wiersz 13</td>
-            <td>Wiersz 14</td>
-            <td>Wiersz 15</td>
-            <td>Wiersz 16</td>
-        </tr>
-        <tr>
-            <td>soft</td>
-            <td>dry_fuel_per_km</td>
-            <td>dry_fuel_per_lap</td>
-            <td id="soft_tyres_per_km">soft_tyres_per_km</td>
-            <td id="soft_tyres_per_lap">soft_tyres_per_lap</td>
-            <td id="soft_stint_km">soft_stint_km</td>
-            <td id="Soft_laps">Soft_laps</td>
-            <td id="soft_stint_fuel">soft_stint_fuel</td>
-            <td id="soft_stint_tyres">soft_stint_tyres</td>
-            <td>
-                <select id="softPitsSelect" onchange="updateSoftPits()">
-                    <!-- Opcje menu -->
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </td>
-            <td id="soft_pit_time_loss">soft_pit_time_loss</td>
-            <td>Wiersz 12</td>
-            <td>Wiersz 13</td>
-            <td>Wiersz 14</td>
-            <td>Wiersz 15</td>
-            <td>Wiersz 16</td>
-        </tr>
-        <tr>
-            <td>medium</td>
-            <td>dry_fuel_per_km</td>
-            <td>dry_fuel_per_lap</td>
-            <td id="medium_tyres_per_km">medium_tyres_per_km</td>
-            <td id="medium_tyres_per_lap">medium_tyres_per_lap</td>
-            <td id="medium_stint_km">medium_stint_km</td>
-            <td id="Medium_laps">Medium_laps</td>
-            <td id="medium_stint_fuel">medium_stint_fuel</td>
-            <td id="medium_stint_tyres">medium_stint_tyres</td>
-            <td>
-                <select id="mediumPitsSelect" onchange="updateMediumPits()">
-                    <!-- Opcje menu -->
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </td>
-            <td id="medium_pit_time_loss">medium_pit_time_loss</td>
-            <td>Wiersz 12</td>
-            <td>Wiersz 13</td>
-            <td>Wiersz 14</td>
-            <td>Wiersz 15</td>
-            <td>Wiersz 16</td>
-        </tr>
-        <tr>
-            <td>hard</td>
-            <td>dry_fuel_per_km</td>
-            <td>dry_fuel_per_lap</td>
-            <td id="hard_tyres_per_km">hard_tyres_per_km</td>
-            <td id="hard_tyres_per_lap">hard_tyres_per_lap</td>
-            <td id="hard_stint_km">hard_stint_km</td>
-            <td id="Hard_laps">Hard_laps</td>
-            <td id="hard_stint_fuel">hard_stint_fuel</td>
-            <td id="hard_stint_tyres">hard_stint_tyres</td>
-            <td>
-                <select id="hardPitsSelect" onchange="updateHardPits()">
-                    <!-- Opcje menu -->
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </td>
-            <td id="hard_pit_time_loss">hard_pit_time_loss</td>
-            <td>Wiersz 12</td>
-            <td>Wiersz 13</td>
-            <td>Wiersz 14</td>
-            <td>Wiersz 15</td>
-            <td>Wiersz 16</td>
-        </tr>
-        <tr>
-            <td>rain</td>
-            <td id="rain_fuel_per_km">rain_fuel_per_km</td>
-            <td id="rain_fuel_per_lap">rain_fuel_per_lap</td>
-            <td id="rain_tyres_per_km">rain_tyres_per_km</td>
-            <td id="rain_tyres_per_lap">rain_tyres_per_lap</td>
-            <td id="rain_stint_km">rain_stint_km</td>
-            <td id="Rain_laps">Rain_laps</td>
-            <td id="rain_stint_fuel">rain_stint_fuel</td>
-            <td id="rain_stint_tyres">rain_stint_tyres</td>
-            <td>
-                <select id="rainPitsSelect" onchange="updateRainPits()">
-                    <!-- Opcje menu -->
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-            </td>
-            <td id="rain_pit_time_loss">rain_pit_time_loss</td>
-            <td>Wiersz 12</td>
-            <td>Wiersz 13</td>
-            <td>Wiersz 14</td>
-            <td>Wiersz 15</td>
-            <td>Wiersz 16</td>
-        </tr>
-    </table>
+            </tr>
+            <tr>
+                <td>soft</td>
+                <td>dry_fuel_per_km</td>
+                <td>dry_fuel_per_lap</td>
+                <td id="soft_tyres_per_km">soft_tyres_per_km</td>
+                <td id="soft_tyres_per_lap">soft_tyres_per_lap</td>
+                <td id="soft_stint_km">soft_stint_km</td>
+                <td id="Soft_laps">Soft_laps</td>
+                <td id="soft_stint_fuel">soft_stint_fuel</td>
+                <td id="soft_stint_tyres">soft_stint_tyres</td>
+                <td>
+                    <select id="softPitsSelect" onchange="updateSoftPits()">
+                        <!-- Opcje menu -->
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </td>
+                <td id="soft_pit_time_loss">soft_pit_time_loss</td>
+                <td id="soft_fuel_time_loss">soft_fuel_time_loss</td>
+                <td id="soft_tcd_time_loss">soft_tcd_time_loss</td>
+                <td id="soft_tyres_wear_time_loss">soft_tyres_wear_time_loss</td>
+                <td id="soft_total_time_loss">soft_total_time_loss</td>
+
+            </tr>
+            <tr>
+                <td>medium</td>
+                <td>dry_fuel_per_km</td>
+                <td>dry_fuel_per_lap</td>
+                <td id="medium_tyres_per_km">medium_tyres_per_km</td>
+                <td id="medium_tyres_per_lap">medium_tyres_per_lap</td>
+                <td id="medium_stint_km">medium_stint_km</td>
+                <td id="Medium_laps">Medium_laps</td>
+                <td id="medium_stint_fuel">medium_stint_fuel</td>
+                <td id="medium_stint_tyres">medium_stint_tyres</td>
+                <td>
+                    <select id="mediumPitsSelect" onchange="updateMediumPits()">
+                        <!-- Opcje menu -->
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </td>
+                <td id="medium_pit_time_loss">medium_pit_time_loss</td>
+                <td id="medium_fuel_time_loss">medium_fuel_time_loss</td>
+                <td id="medium_tcd_time_loss">medium_tcd_time_loss</td>
+                <td id="medium_tyres_wear_time_loss">medium_tyres_wear_time_loss</td>
+                <td id="medium_total_time_loss">medium_total_time_loss</td>
+
+            </tr>
+            <tr>
+                <td>hard</td>
+                <td>dry_fuel_per_km</td>
+                <td>dry_fuel_per_lap</td>
+                <td id="hard_tyres_per_km">hard_tyres_per_km</td>
+                <td id="hard_tyres_per_lap">hard_tyres_per_lap</td>
+                <td id="hard_stint_km">hard_stint_km</td>
+                <td id="Hard_laps">Hard_laps</td>
+                <td id="hard_stint_fuel">hard_stint_fuel</td>
+                <td id="hard_stint_tyres">hard_stint_tyres</td>
+                <td>
+                    <select id="hardPitsSelect" onchange="updateHardPits()">
+                        <!-- Opcje menu -->
+                        <option value="0">0</option>
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </td>
+                <td id="hard_pit_time_loss">hard_pit_time_loss</td>
+                <td id="hard_fuel_time_loss">hard_fuel_time_loss</td>
+                <td id="hard_tcd_time_loss">hard_tcd_time_loss</td>
+                <td id="hard_tyres_wear_time_loss">hard_tyres_wear_time_loss</td>
+                <td id="hard_total_time_loss">hard_total_time_loss</td>
+
+            </tr>
+            <tr>
+                <td>rain</td>
+                <td id="rain_fuel_per_km">rain_fuel_per_km</td>
+                <td id="rain_fuel_per_lap">rain_fuel_per_lap</td>
+                <td id="rain_tyres_per_km">rain_tyres_per_km</td>
+                <td id="rain_tyres_per_lap">rain_tyres_per_lap</td>
+                <td id="rain_stint_km">rain_stint_km</td>
+                <td id="Rain_laps">Rain_laps</td>
+                <td id="rain_stint_fuel">rain_stint_fuel</td>
+                <td id="rain_stint_tyres">rain_stint_tyres</td>
+                <td>
+                    <select id="rainPitsSelect" onchange="updateRainPits()">
+                        <!-- Opcje menu -->
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </td>
+                <td id="rain_pit_time_loss">rain_pit_time_loss</td>
+                <td id="rain_fuel_time_loss">rain_fuel_time_loss</td>
+                <td></td>
+                <td id="rain_tyres_wear_time_loss">rain_tyres_wear_time_loss</td>
+                <td id="rain_total_time_loss">rain_total_time_loss</td>
+
+            </tr>
+        </table>
+    </div>
     <script>
         // Inicjalizacja zmiennej CT_selected
         let CT_selected = 50;
@@ -228,24 +237,39 @@
             updateHardPits();
             updateRainPits();
         });
-        ///////////////////////////////////////////////////////////////////////////////
-        var lap_length = 4.42
-        var laps = 69
-        var dry_fuel_per_km = 0.662;
-        var rain_fuel_per_km = 0.516;
-        var xs_tyres_per_km = 0.790;
-        var soft_tyres_per_km = 0.601;
-        var medium_tyres_per_km = 0.470;
-        var hard_tyres_per_km = 0.369;
-        var rain_tyres_per_km = 0.199;
-        var pit_time_in_out = 24;
-        var dry_fuel_per_lap = (lap_length * dry_fuel_per_km).toFixed(3)
-        var rain_fuel_per_lap = (lap_length * rain_fuel_per_km).toFixed(3)
-        var xs_tyres_per_lap = (lap_length * xs_tyres_per_km).toFixed(3)
-        var soft_tyres_per_lap = (lap_length * soft_tyres_per_km).toFixed(3)
-        var medium_tyres_per_lap = (lap_length * medium_tyres_per_km).toFixed(3)
-        var hard_tyres_per_lap = (lap_length * hard_tyres_per_km).toFixed(3)
-        var rain_tyres_per_lap = (lap_length * rain_tyres_per_km).toFixed(3)
+        // zmienne 
+
+        var lap_length = 5.475;
+        var laps = 55
+        var race_distance = 301.1;
+        var pit_time_in_out = 13.5;
+        var tcd = 0.216;
+        var dry_fuel_per_km = 0.718;
+        var rain_fuel_per_km = 0.502;
+        var xs_tyres_per_km = 0.981;
+        var soft_tyres_per_km = 0.745;
+        var medium_tyres_per_km = 0.548;
+        var hard_tyres_per_km = 0.403;
+        var rain_tyres_per_km = 0.299;
+        var xs_tyres_wear_time_loss = 0;
+        var soft_tyres_wear_time_loss = 0.0;
+        var medium_tyres_wear_time_loss = 0.0;
+        var hard_tyres_wear_time_loss = 0.0;
+        var rain_tyres_wear_time_loss = 0.0;
+        var dry_fuel_per_lap = parseFloat((lap_length * dry_fuel_per_km).toFixed(3))
+        var rain_fuel_per_lap = parseFloat((lap_length * rain_fuel_per_km).toFixed(3))
+        var xs_tyres_per_lap = parseFloat((lap_length * xs_tyres_per_km).toFixed(3))
+        var soft_tyres_per_lap = parseFloat((lap_length * soft_tyres_per_km).toFixed(3))
+        var medium_tyres_per_lap = parseFloat((lap_length * medium_tyres_per_km).toFixed(3))
+        var hard_tyres_per_lap = parseFloat((lap_length * hard_tyres_per_km).toFixed(3))
+        var rain_tyres_per_lap = parseFloat((lap_length * rain_tyres_per_km).toFixed(3))
+        var xs_tcd_time_loss = 0;
+        var soft_tcd_time_loss = parseFloat((laps * tcd).toFixed(1));
+        var medium_tcd_time_loss = parseFloat((soft_tcd_time_loss * 2).toFixed(1));
+        var hard_tcd_time_loss = parseFloat((soft_tcd_time_loss * 3).toFixed(1));
+
+
+
 
         var cells = document.getElementsByTagName("td");
         for (var i = 0; i < cells.length; i++) {
@@ -270,47 +294,85 @@
         document.getElementById('medium_tyres_per_lap').innerHTML = medium_tyres_per_lap;
         document.getElementById('hard_tyres_per_lap').innerHTML = hard_tyres_per_lap;
         document.getElementById('rain_tyres_per_lap').innerHTML = rain_tyres_per_lap;
+        document.getElementById('xs_tcd_time_loss').innerHTML = xs_tcd_time_loss;
+        document.getElementById('soft_tcd_time_loss').innerHTML = soft_tcd_time_loss;
+        document.getElementById('medium_tcd_time_loss').innerHTML = medium_tcd_time_loss;
+        document.getElementById('hard_tcd_time_loss').innerHTML = hard_tcd_time_loss;
+        document.getElementById('xs_tyres_wear_time_loss').innerHTML = xs_tyres_wear_time_loss;
+        document.getElementById('soft_tyres_wear_time_loss').innerHTML = soft_tyres_wear_time_loss;
+        document.getElementById('medium_tyres_wear_time_loss').innerHTML = medium_tyres_wear_time_loss;
+        document.getElementById('hard_tyres_wear_time_loss').innerHTML = hard_tyres_wear_time_loss;
+        document.getElementById('rain_tyres_wear_time_loss').innerHTML = rain_tyres_wear_time_loss;
+
 
         function updateXsPits() {
+
             var xsPitsSelect = document.getElementById("xsPitsSelect");
             var selectedValue = xsPitsSelect.value;
             window.XS_pits = parseInt(selectedValue); // Zapisz wybraną wartość jako liczbę do zmiennej XS_pits
             updateXsLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
-            var xs_pit_time_loss = selectedValue * (pit_time_in_out + ExpectedPitTime_selected)
+            var xs_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('xs_pit_time_loss').innerHTML = xs_pit_time_loss;
+
+            var xs_total_time_loss = xs_pit_time_loss + xs_fuel_time_loss + xs_tcd_time_loss + xs_tyres_wear_time_loss
+            document.getElementById('xs_total_time_loss').innerHTML = xs_total_time_loss;
+
         }
+        var xs_fuel_time_loss;
 
         function updateXsLaps() {
             var xs_laps = laps / (window.XS_pits + 1);
             xs_laps = Math.ceil(xs_laps); // Zaokrąglanie w górę
             console.log("XS_laps: ", xs_laps);
             document.getElementById('XS_laps').innerHTML = xs_laps;
-            var xs_stint_km = (lap_length * xs_laps).toFixed(1);
+            var xs_stint_km = parseFloat((lap_length * xs_laps).toFixed(1));
             console.log(xs_stint_km);
             document.getElementById('xs_stint_km').innerHTML = xs_stint_km;
             var xs_stint_fuel = dry_fuel_per_km * xs_stint_km;
             xs_stint_fuel = Math.ceil(xs_stint_fuel); // Zaokrąglanie w górę
+
             document.getElementById('xs_stint_fuel').innerHTML = xs_stint_fuel;
             var xs_stint_tyres = xs_tyres_per_km * xs_stint_km;
             xs_stint_tyres = Math.ceil(xs_stint_tyres); // Zaokrąglanie w górę
+
             document.getElementById('xs_stint_tyres').innerHTML = xs_stint_tyres + "%";
+            if (xs_stint_tyres > 100) {
+                document.getElementById('xs_stint_tyres').style.color = "red";
+            } else if (xs_stint_tyres >= 90 && xs_stint_tyres <= 100) {
+                document.getElementById('xs_stint_tyres').style.color = "tomato";
+            } else if (xs_stint_tyres >= 80 && xs_stint_tyres <= 90) {
+                document.getElementById('xs_stint_tyres').style.color = "orange";
+            } else {
+                document.getElementById('xs_stint_tyres').style.color = "green";
+            }
+
+            xs_fuel_time_loss = parseFloat((xs_stint_fuel / 2 * race_distance * 0.00422).toFixed(1))
+            document.getElementById('xs_fuel_time_loss').innerHTML = xs_fuel_time_loss;
+            console.log(xs_fuel_time_loss);
+
+
+
         }
 
         function updateSoftPits() {
             var softPitsSelect = document.getElementById("softPitsSelect");
             var selectedValue = softPitsSelect.value;
+
             window.Soft_pits = parseInt(selectedValue); // Zapisz wybraną wartość jako liczbę do zmiennej XS_pits
             updateSoftLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
-            var soft_pit_time_loss = selectedValue * (pit_time_in_out + ExpectedPitTime_selected)
+            var soft_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('soft_pit_time_loss').innerHTML = soft_pit_time_loss;
-        }
 
+            var soft_total_time_loss = soft_pit_time_loss + soft_fuel_time_loss + soft_tcd_time_loss + soft_tyres_wear_time_loss
+            document.getElementById('soft_total_time_loss').innerHTML = soft_total_time_loss;
+        }
+        var soft_fuel_time_loss;
         function updateSoftLaps() {
             var soft_laps = laps / (window.Soft_pits + 1);
             soft_laps = Math.ceil(soft_laps); // Zaokrąglanie w górę
             console.log("Soft_laps: ", soft_laps);
             document.getElementById('Soft_laps').innerHTML = soft_laps;
-            var soft_stint_km = (lap_length * soft_laps).toFixed(1);
+            var soft_stint_km = parseFloat((lap_length * soft_laps).toFixed(1));
             console.log(soft_stint_km);
             document.getElementById('soft_stint_km').innerHTML = soft_stint_km;
             var soft_stint_fuel = dry_fuel_per_km * soft_stint_km;
@@ -319,6 +381,17 @@
             var soft_stint_tyres = soft_tyres_per_km * soft_stint_km;
             soft_stint_tyres = Math.ceil(soft_stint_tyres); // Zaokrąglanie w górę
             document.getElementById('soft_stint_tyres').innerHTML = soft_stint_tyres + "%";
+            if (soft_stint_tyres > 100) {
+                document.getElementById('soft_stint_tyres').style.color = "red";
+            } else if (soft_stint_tyres >= 90 && soft_stint_tyres <= 100) {
+                document.getElementById('soft_stint_tyres').style.color = "tomato";
+            } else if (soft_stint_tyres >= 80 && soft_stint_tyres <= 90) {
+                document.getElementById('soft_stint_tyres').style.color = "orange";
+            } else {
+                document.getElementById('soft_stint_tyres').style.color = "green";
+            }
+            soft_fuel_time_loss = parseFloat((soft_stint_fuel / 2 * race_distance * 0.00422).toFixed(1))
+            document.getElementById('soft_fuel_time_loss').innerHTML = soft_fuel_time_loss;
         }
 
         function updateMediumPits() {
@@ -326,16 +399,18 @@
             var selectedValue = mediumPitsSelect.value;
             window.Medium_pits = parseInt(selectedValue); // Zapisz wybraną wartość jako liczbę do zmiennej XS_pits
             updateMediumLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
-            var medium_pit_time_loss = selectedValue * (pit_time_in_out + ExpectedPitTime_selected)
+            var medium_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('medium_pit_time_loss').innerHTML = medium_pit_time_loss;
+            var medium_total_time_loss = medium_pit_time_loss + medium_fuel_time_loss + medium_tcd_time_loss + medium_tyres_wear_time_loss
+            document.getElementById('medium_total_time_loss').innerHTML = medium_total_time_loss;
         }
-
+        var medium_fuel_time_loss;
         function updateMediumLaps() {
             var medium_laps = laps / (window.Medium_pits + 1);
             medium_laps = Math.ceil(medium_laps); // Zaokrąglanie w górę
             console.log("Medium_laps: ", medium_laps);
             document.getElementById('Medium_laps').innerHTML = medium_laps;
-            var medium_stint_km = (lap_length * medium_laps).toFixed(1);
+            var medium_stint_km = parseFloat((lap_length * medium_laps).toFixed(1));
             console.log(medium_stint_km);
             document.getElementById('medium_stint_km').innerHTML = medium_stint_km;
             var medium_stint_fuel = dry_fuel_per_km * medium_stint_km;
@@ -344,22 +419,38 @@
             var medium_stint_tyres = medium_tyres_per_km * medium_stint_km;
             medium_stint_tyres = Math.ceil(medium_stint_tyres); // Zaokrąglanie w górę
             document.getElementById('medium_stint_tyres').innerHTML = medium_stint_tyres + "%";
+            if (medium_stint_tyres > 100) {
+                document.getElementById('medium_stint_tyres').style.color = "red";
+            } else if (medium_stint_tyres >= 90 && medium_stint_tyres <= 100) {
+                document.getElementById('medium_stint_tyres').style.color = "tomato";
+            } else if (medium_stint_tyres >= 80 && medium_stint_tyres <= 90) {
+                document.getElementById('medium_stint_tyres').style.color = "orange";
+            } else {
+                document.getElementById('medium_stint_tyres').style.color = "green";
+            }
+
+            medium_fuel_time_loss = parseFloat((medium_stint_fuel / 2 * race_distance * 0.00422).toFixed(1))
+            document.getElementById('medium_fuel_time_loss').innerHTML = medium_fuel_time_loss;
         }
+
+
         function updateHardPits() {
             var hardPitsSelect = document.getElementById("hardPitsSelect");
             var selectedValue = hardPitsSelect.value;
             window.Hard_pits = parseInt(selectedValue); // Zapisz wybraną wartość jako liczbę do zmiennej XS_pits
             updateHardLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
-            var hard_pit_time_loss = selectedValue * (pit_time_in_out + ExpectedPitTime_selected)
+            var hard_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('hard_pit_time_loss').innerHTML = hard_pit_time_loss;
+            var hard_total_time_loss = hard_pit_time_loss + hard_fuel_time_loss + hard_tcd_time_loss + hard_tyres_wear_time_loss
+            document.getElementById('hard_total_time_loss').innerHTML = hard_total_time_loss;
         }
-
+        var hard_fuel_time_loss;
         function updateHardLaps() {
             var hard_laps = laps / (window.Hard_pits + 1);
             hard_laps = Math.ceil(hard_laps); // Zaokrąglanie w górę
             console.log("Hard_laps: ", hard_laps);
             document.getElementById('Hard_laps').innerHTML = hard_laps;
-            var hard_stint_km = (lap_length * hard_laps).toFixed(1);
+            var hard_stint_km = parseFloat((lap_length * hard_laps).toFixed(1));
             console.log(hard_stint_km);
             document.getElementById('hard_stint_km').innerHTML = hard_stint_km;
             var hard_stint_fuel = dry_fuel_per_km * hard_stint_km;
@@ -368,6 +459,17 @@
             var hard_stint_tyres = hard_tyres_per_km * hard_stint_km;
             hard_stint_tyres = Math.ceil(hard_stint_tyres); // Zaokrąglanie w górę
             document.getElementById('hard_stint_tyres').innerHTML = hard_stint_tyres + "%";
+            if (hard_stint_tyres > 100) {
+                document.getElementById('hard_stint_tyres').style.color = "red";
+            } else if (hard_stint_tyres >= 90 && hard_stint_tyres <= 100) {
+                document.getElementById('hard_stint_tyres').style.color = "tomato";
+            } else if (hard_stint_tyres >= 80 && hard_stint_tyres <= 90) {
+                document.getElementById('hard_stint_tyres').style.color = "orange";
+            } else {
+                document.getElementById('hard_stint_tyres').style.color = "green";
+            }
+            hard_fuel_time_loss = parseFloat((hard_stint_fuel / 2 * race_distance * 0.00422).toFixed(1))
+            document.getElementById('hard_fuel_time_loss').innerHTML = hard_fuel_time_loss;
         }
 
         function updateRainPits() {
@@ -375,24 +477,37 @@
             var selectedValue = rainPitsSelect.value;
             window.Rain_pits = parseInt(selectedValue); // Zapisz wybraną wartość jako liczbę do zmiennej XS_pits
             updateRainLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
-            var rain_pit_time_loss = selectedValue * (pit_time_in_out + ExpectedPitTime_selected)
+            var rain_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('rain_pit_time_loss').innerHTML = rain_pit_time_loss;
+            var rain_total_time_loss = rain_pit_time_loss + rain_fuel_time_loss + rain_tyres_wear_time_loss
+            document.getElementById('rain_total_time_loss').innerHTML = rain_total_time_loss;
         }
-
+        var rain_fuel_time_loss;
         function updateRainLaps() {
             var rain_laps = laps / (window.Rain_pits + 1);
             rain_laps = Math.ceil(rain_laps); // Zaokrąglanie w górę
             console.log("rain_laps: ", rain_laps);
             document.getElementById('Rain_laps').innerHTML = rain_laps;
-            var rain_stint_km = (lap_length * rain_laps).toFixed(1);
+            var rain_stint_km = parseFloat((lap_length * rain_laps).toFixed(1));
             console.log(rain_stint_km);
             document.getElementById('rain_stint_km').innerHTML = rain_stint_km;
-            var rain_stint_fuel = dry_fuel_per_km * rain_stint_km;
+            var rain_stint_fuel = rain_fuel_per_km * rain_stint_km;
             rain_stint_fuel = Math.ceil(rain_stint_fuel); // Zaokrąglanie w górę
             document.getElementById('rain_stint_fuel').innerHTML = rain_stint_fuel;
             var rain_stint_tyres = rain_tyres_per_km * rain_stint_km;
             rain_stint_tyres = Math.ceil(rain_stint_tyres); // Zaokrąglanie w górę
             document.getElementById('rain_stint_tyres').innerHTML = rain_stint_tyres + "%";
+            if (rain_stint_tyres > 100) {
+                document.getElementById('rain_stint_tyres').style.color = "red";
+            } else if (rain_stint_tyres >= 90 && rain_stint_tyres <= 100) {
+                document.getElementById('rain_stint_tyres').style.color = "tomato";
+            } else if (rain_stint_tyres >= 80 && rain_stint_tyres <= 90) {
+                document.getElementById('rain_stint_tyres').style.color = "orange";
+            } else {
+                document.getElementById('rain_stint_tyres').style.color = "green";
+            }
+            rain_fuel_time_loss = parseFloat((rain_stint_fuel / 2 * race_distance * 0.00422).toFixed(1))
+            document.getElementById('rain_fuel_time_loss').innerHTML = rain_fuel_time_loss;
         }
 
 
@@ -404,6 +519,7 @@
             updateMediumPits();
             updateHardPits();
             updateRainPits();
+            totalXsLoss();
         };
     </script>
 </body>
