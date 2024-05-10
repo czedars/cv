@@ -10,24 +10,45 @@
             background-color: Lavender;
         }
 
-        .center-table {
+        .roughstrategy-table {
             text-align: center;
         }
 
-        .center-table table {
+        .roughstrategy-table table {
             margin: 0 auto;
             border-collapse: collapse;
             width: 80%;
         }
 
-        .center-table th,
-        .center-table td {
+        .roughstrategy-table th,
+        .roughstrategy-table td {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
         }
 
-        .center-table th {
+        .roughstrategy-table th {
+            background-color: lightgray;
+        }
+
+        .detailed-table {
+            text-align: center;
+        }
+
+        .detailed-table table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 60%;
+        }
+
+        .detailed-table th,
+        .detailed-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .detailed-table th {
             background-color: lightgray;
         }
     </style>
@@ -39,9 +60,9 @@
 
     <label for="pitTimeSelector">Expected Pit Time:</label>
     <input type="number" id="pitTimeSelector" value="20" min="0" step="0.5" style="width: 45px;">
-    <div class="center-table">
+    <div class="roughstrategy-table">
         <table>
-            <caption>Rough Strategy</caption>
+            <h3>Rough Strategy</h3>
             <tr>
                 <th rowspan="2">tyres</th>
                 <th rowspan="2">fuel / km</th>
@@ -51,7 +72,7 @@
                 <th colspan="4">stint</th>
 
                 <th rowspan="2">pitstops</th>
-                <th colspan="5">time loss</th>
+                <th colspan="5">time loss due to: </th>
 
                 <!-- <th>time gain</th> -->
                 <!-- <th>total</th> -->
@@ -214,6 +235,165 @@
             </tr>
         </table>
     </div>
+
+    <div class="detailed-table ">
+        <table>
+            <h3>Detailed Strategy</h3>
+            <tr>
+                <th>weather</th>
+                <th>tyres</th>
+                <th>laps</th>
+                <th>temps</th>
+                <th>boosts</th>
+                <th>fuel</th>
+                <th>tyres</th>
+                <th>laps</th>
+            </tr>
+            <tr>
+                <td>
+                    <select id="weather_selector1">
+                        <option value="dry">Dry</option>
+                        <option value="wet">Wet</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="tyres_selector1">
+                        <option value="extra-soft">Extra Soft</option>
+                        <option value="soft">Soft</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="rain">Rain</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" min="0" max="100" id="number_laps_selector1" value="0">
+                </td>
+                <td id="average_temperature_row1"></td>
+                <td>
+                    <input type="number" min="0" max="9" id="boosts_selector1" value="0">
+                </td>
+                <td id="fuel_row1"></td>
+                <td id="tyres_row1"></td>
+                <td id="lapsValueRow1">0</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <select id="weather_selector2">
+                        <option value="dry">Dry</option>
+                        <option value="wet">Wet</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="tyres_selector2">
+                        <option value="extra-soft">Extra Soft</option>
+                        <option value="soft">Soft</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="rain">Rain</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" min="0" max="100" id="number_laps_selector2" value="0">
+                </td>
+                <td id="average_temperature_row2"></td>
+                <td>
+                    <input type="number" min="0" max="9" id="boosts_selector2" value="0">
+                </td>
+                <td id="fuel_row2"></td>
+                <td id="tyres_row2"></td>
+                <td id="lapsValueRow2">0</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <select id="weather_selector3">
+                        <option value="dry">Dry</option>
+                        <option value="wet">Wet</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="tyres_selector3">
+                        <option value="extra-soft">Extra Soft</option>
+                        <option value="soft">Soft</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="rain">Rain</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" min="0" max="100" id="number_laps_selector3" value="0">
+                </td>
+                <td id="average_temperature_row3"></td>
+                <td>
+                    <input type="number" min="0" max="9" id="boosts_selector3" value="0">
+                </td>
+                <td id="fuel_row3"></td>
+                <td id="tyres_row3"></td>
+                <td id="lapsValueRow3">0</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <select id="weather_selector4">
+                        <option value="dry">Dry</option>
+                        <option value="wet">Wet</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="tyres_selector4">
+                        <option value="extra-soft">Extra Soft</option>
+                        <option value="soft">Soft</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="rain">Rain</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" min="0" max="100" id="number_laps_selector4" value="0">
+                </td>
+                <td id="average_temperature_row4"></td>
+                <td>
+                    <input type="number" min="0" max="9" id="boosts_selector4" value="0">
+                </td>
+                <td id="fuel_row4"></td>
+                <td id="tyres_row4"></td>
+                <td id="lapsValueRow4">0</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <select id="weather_selector5">
+                        <option value="dry">Dry</option>
+                        <option value="wet">Wet</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="tyres_selector5">
+                        <option value="extra-soft">Extra Soft</option>
+                        <option value="soft">Soft</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="rain">Rain</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" min="0" max="100" id="number_laps_selector5" value="0">
+                </td>
+                <td id="average_temperature_row5"></td>
+                <td>
+                    <input type="number" min="0" max="9" id="boosts_selector5" value="0">
+                </td>
+                <td id="fuel_row5"></td>
+                <td id="tyres_row5"></td>
+                <td id="lapsValueRow5">0</td>
+
+            </tr>
+        </table>
+    </div>
+
+
+
     <script>
         // Inicjalizacja zmiennej CT_selected
         let CT_selected = 50;
@@ -267,6 +447,18 @@
         var soft_tcd_time_loss = parseFloat((laps * tcd).toFixed(1));
         var medium_tcd_time_loss = parseFloat((soft_tcd_time_loss * 2).toFixed(1));
         var hard_tcd_time_loss = parseFloat((soft_tcd_time_loss * 3).toFixed(1));
+        var qualify1_temp = 19;
+        var qualify2_temp = 20;
+        var q1_min = 20;
+        var q1_max = 24;
+        var q2_min = 18;
+        var q2_max = 21;
+        var q3_min = 16;
+        var q3_max = 21;
+        var q4_min = 17;
+        var q4_max = 21;
+        var laps_in_quarter = 29;
+        var row1_first_lap = 1;
 
 
 
@@ -314,7 +506,7 @@
             var xs_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('xs_pit_time_loss').innerHTML = xs_pit_time_loss;
 
-            var xs_total_time_loss = xs_pit_time_loss + xs_fuel_time_loss + xs_tcd_time_loss + xs_tyres_wear_time_loss
+            var xs_total_time_loss = parseFloat((xs_pit_time_loss + xs_fuel_time_loss + xs_tcd_time_loss + xs_tyres_wear_time_loss).toFixed(1))
             document.getElementById('xs_total_time_loss').innerHTML = xs_total_time_loss;
 
         }
@@ -363,7 +555,7 @@
             var soft_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('soft_pit_time_loss').innerHTML = soft_pit_time_loss;
 
-            var soft_total_time_loss = soft_pit_time_loss + soft_fuel_time_loss + soft_tcd_time_loss + soft_tyres_wear_time_loss
+            var soft_total_time_loss = parseFloat((soft_pit_time_loss + soft_fuel_time_loss + soft_tcd_time_loss + soft_tyres_wear_time_loss).toFixed(1))
             document.getElementById('soft_total_time_loss').innerHTML = soft_total_time_loss;
         }
         var soft_fuel_time_loss;
@@ -401,7 +593,7 @@
             updateMediumLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
             var medium_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('medium_pit_time_loss').innerHTML = medium_pit_time_loss;
-            var medium_total_time_loss = medium_pit_time_loss + medium_fuel_time_loss + medium_tcd_time_loss + medium_tyres_wear_time_loss
+            var medium_total_time_loss = parseFloat((medium_pit_time_loss + medium_fuel_time_loss + medium_tcd_time_loss + medium_tyres_wear_time_loss).toFixed(1))
             document.getElementById('medium_total_time_loss').innerHTML = medium_total_time_loss;
         }
         var medium_fuel_time_loss;
@@ -441,7 +633,7 @@
             updateHardLaps(); // Wywołaj funkcję aktualizującą zmienne zależne od XS_pits
             var hard_pit_time_loss = parseFloat((selectedValue * (pit_time_in_out + ExpectedPitTime_selected)).toFixed(1))
             document.getElementById('hard_pit_time_loss').innerHTML = hard_pit_time_loss;
-            var hard_total_time_loss = hard_pit_time_loss + hard_fuel_time_loss + hard_tcd_time_loss + hard_tyres_wear_time_loss
+            var hard_total_time_loss = parseFloat((hard_pit_time_loss + hard_fuel_time_loss + hard_tcd_time_loss + hard_tyres_wear_time_loss).toFixed(1))
             document.getElementById('hard_total_time_loss').innerHTML = hard_total_time_loss;
         }
         var hard_fuel_time_loss;
@@ -510,7 +702,131 @@
             document.getElementById('rain_fuel_time_loss').innerHTML = rain_fuel_time_loss;
         }
 
+        var inputs = [];
+        for (var i = 1; i <= 5; i++) {
+            inputs.push({
+                lapsInput: document.getElementById("number_laps_selector" + i),
+                weatherSelector: document.getElementById("weather_selector" + i),
+                tyresSelector: document.getElementById("tyres_selector" + i),
+                boostsSelector: document.getElementById("boosts_selector" + i),
+                averageTemperature: document.getElementById("average_temperature_row" + i),
+                fuel: document.getElementById("fuel_row" + i),
+                tyres: document.getElementById("tyres_row" + i),
+                rowFirstLap: document.getElementById("row" + i + "_first_lap"),
+                lapsValue: document.getElementById("lapsValueRow" + i),
 
+            });
+        }
+
+        inputs.forEach(function (input, index) {
+            input.lapsInput.addEventListener("input", function () {
+                var lapsValue = parseInt(input.lapsInput.value);
+                console.log("Wartość liczby okrążeń:", lapsValue);
+
+                var temp_for_each_lap = createTempArray(lapsValue);
+                console.log(temp_for_each_lap);
+
+                var average_temperature = calculateAverage(temp_for_each_lap, lapsValue);
+                input.averageTemperature.textContent = average_temperature.toFixed(1);
+
+                // Obliczanie paliwa
+                var fuel = calculateFuel(lapsValue, input.weatherSelector.value);
+                input.fuel.textContent = fuel.toFixed(1);
+
+                // Obliczanie zużytych opon
+                var tyres = calculateTyres(lapsValue, input.tyresSelector.value);
+                input.tyres.textContent = tyres.toFixed(1);
+
+                // Suma okrążeń w bieżącym wierszu i poprzednich wierszach
+                var totalLaps = 0;
+                for (var i = 0; i <= index; i++) {
+                    totalLaps += parseInt(inputs[i].lapsInput.value);
+                }
+
+                // Jeśli to nie pierwszy wiersz, oblicz wartość na podstawie poprzedniego wiersza
+                if (index > 0) {
+                    totalLaps = (totalLaps + 1 - parseInt(inputs[index].lapsInput.value)) + " - " + totalLaps;
+                } else {
+                    totalLaps = "1 - " + totalLaps;
+                }
+
+                // Ustawienie wartości dla ostatniej kolumny
+                input.lapsValue.textContent = totalLaps;
+
+            });
+        });
+
+        function createTempArray(totalLaps) {
+            var temp_for_each_lap = [];
+            for (var i = 0; i < laps; i++) {
+                if (i < 7) {
+                    temp_for_each_lap.push(qualify2_temp);
+                } else if (i < laps_in_quarter) {
+                    temp_for_each_lap.push(q1_max);
+                } else if (i < laps_in_quarter * 2) {
+                    temp_for_each_lap.push(q2_max);
+                } else if (i < laps_in_quarter * 3) {
+                    temp_for_each_lap.push(q3_max);
+                } else if (i < laps_in_quarter * 4) {
+                    temp_for_each_lap.push(q4_max);
+                }
+            }
+            return temp_for_each_lap;
+        }
+
+        function calculateAverage(tempArray, totalLaps) {
+            if (tempArray.length < totalLaps) {
+                // Jeśli tablica ma mniej elementów niż total_laps, zwróć null
+                return null;
+            }
+
+            var sum = 0;
+            for (var i = 0; i < totalLaps; i++) {
+                sum += tempArray[i];
+            }
+
+            return sum / totalLaps;
+        }
+
+        function calculateFuel(totalLaps, weather) {
+            var fuel_per_lap;
+            switch (weather) {
+                case "dry":
+                    fuel_per_lap = dry_fuel_per_lap;
+                    break;
+                case "wet":
+                    fuel_per_lap = rain_fuel_per_lap;
+                    break;
+                default:
+                    fuel_per_lap = 0;
+            }
+            var boosts = parseFloat(inputs[0].boostsSelector.value);
+            return totalLaps * fuel_per_lap + boosts * lap_length * 0.12;
+        }
+
+        function calculateTyres(totalLaps, selectedTyres) {
+            var tyres_per_lap;
+            switch (selectedTyres) {
+                case "extra-soft":
+                    tyres_per_lap = xs_tyres_per_lap;
+                    break;
+                case "soft":
+                    tyres_per_lap = soft_tyres_per_lap;
+                    break;
+                case "medium":
+                    tyres_per_lap = medium_tyres_per_lap;
+                    break;
+                case "hard":
+                    tyres_per_lap = hard_tyres_per_lap;
+                    break;
+                case "rain":
+                    tyres_per_lap = rain_tyres_per_lap;
+                    break;
+                default:
+                    tyres_per_lap = 0;
+            }
+            return totalLaps * tyres_per_lap;
+        }
 
         // Aktualizuj XS_laps po załadowaniu strony
         window.onload = function () {
