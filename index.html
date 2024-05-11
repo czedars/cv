@@ -396,7 +396,7 @@
 
     <script>
 
-        
+
         // Inicjalizacja zmiennej CT_selected
         let CT_selected = 50;
 
@@ -462,7 +462,35 @@
         var laps_in_quarter = 29;
         var row1_first_lap = 1;
 
+        // Tworzymy zapytanie HTTP GET do strony internetowej
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://tool.nuvolariracing.com/nstrategy.php', true);
 
+        // Obsługujemy zdarzenie po zakończeniu zapytania
+        xhr.onload = function () {
+            // Sprawdzamy, czy status odpowiedzi jest OK (200)
+            if (xhr.status === 200) {
+                // Parsujemy odpowiedź jako obiekt JSON
+                var data = JSON.parse(xhr.responseText);
+                // Pobieramy wartość laps
+                var laps = data.laps;
+                var pit_time_in_out = data.pit_time_in_out;
+                // Wyświetlamy wartość laps w konsoli
+                console.log("Wartość laps pobrana ze strony: " + laps);
+                // Tutaj możesz przypisać wartość laps do zmiennej lub wykonać inne operacje na niej
+            } else {
+                // Jeśli status odpowiedzi nie jest OK, wyświetlamy błąd
+                console.error('Wystąpił błąd podczas pobierania danych. Status: ' + xhr.status);
+            }
+        };
+
+        // Obsługujemy ewentualne błędy związane z zapytaniem
+        xhr.onerror = function () {
+            console.error('Wystąpił błąd podczas pobierania danych.');
+        };
+
+        // Wysyłamy zapytanie
+        xhr.send();
 
 
         var cells = document.getElementsByTagName("td");
@@ -703,6 +731,8 @@
             rain_fuel_time_loss = parseFloat((rain_stint_fuel / 2 * race_distance * 0.00422).toFixed(1))
             document.getElementById('rain_fuel_time_loss').innerHTML = rain_fuel_time_loss;
         }
+        // datailed strategy //
+
 
         var inputs = [];
         for (var i = 1; i <= 5; i++) {
@@ -722,54 +752,68 @@
 
         inputs.forEach(function (input, index) {
 
-// Dodajemy zdarzenia nasłuchujące na zmiany w kolumnach weather, tyres, laps i boost
-input.weatherSelector.addEventListener("change", function () {
-        recalculateValues(input);
-    });
+            // // Dodajemy zdarzenia nasłuchujące na zmiany w kolumnach weather, tyres, laps i boost
+            // input.weatherSelector.addEventListener("change", function () {
+            //     recalculateValues(input);
+            // });
 
-    input.tyresSelector.addEventListener("change", function () {
-        recalculateValues(input);
-    });
+            // input.tyresSelector.addEventListener("change", function () {
+            //     recalculateValues(input);
+            // });
 
-    input.lapsInput.addEventListener("change", function () {
-        recalculateValues(input);
-    });
+            // input.lapsInput.addEventListener("change", function () {
+            //     recalculateValues(input);
+            // });
 
-    input.boostsSelector.addEventListener("change", function () {
-        recalculateValues(input);
-    });
+            // input.boostsSelector.addEventListener("change", function () {
+            //     recalculateValues(input);
+            // });
 
-    
+            // Dodajemy zdarzenia nasłuchujące na zmiany w kolumnach weather, tyres, laps i boost
+            input.weatherSelector.addEventListener("change", function () {
+                recalculateValues(input, index); // Przekazujemy indeks
+            });
 
-    function recalculateValues(input) {
-    var lapsValue = parseInt(input.lapsInput.value);
+            input.tyresSelector.addEventListener("change", function () {
+                recalculateValues(input, index); // Przekazujemy indeks
+            });
 
-    var temp_for_each_lap = createTempArray(lapsValue);
-    var average_temperature = calculateAverage(temp_for_each_lap, lapsValue);
-    input.averageTemperature.textContent = average_temperature.toFixed(1);
+            input.lapsInput.addEventListener("change", function () {
+                recalculateValues(input, index); // Przekazujemy indeks
+            });
 
-    var fuel = calculateFuel(lapsValue, input.weatherSelector.value, parseFloat(input.boostsSelector.value));
-    input.fuel.textContent = fuel.toFixed(1);
-
-    var tyres = calculateTyres(lapsValue, input.tyresSelector.value);
-    input.tyres.textContent = tyres.toFixed(1);
-
-    var totalLaps = 0;
-    for (var i = 0; i <= index; i++) {
-        totalLaps += parseInt(inputs[i].lapsInput.value);
-    }
-
-    if (index > 0) {
-        totalLaps = (totalLaps + 1 - parseInt(inputs[index].lapsInput.value)) + " - " + totalLaps;
-    } else {
-        totalLaps = "1 - " + totalLaps;
-    }
-
-    
+            input.boostsSelector.addEventListener("change", function () {
+                recalculateValues(input, index); // Przekazujemy indeks
+            });
 
 
-        input.lapsValue.textContent = totalLaps;
-    }
+
+            function recalculateValues(input, index) {
+                var lapsValue = parseInt(input.lapsInput.value);
+
+                var temp_for_each_lap = createTempArray(lapsValue);
+                var average_temperature = calculateAverage(temp_for_each_lap, lapsValue);
+                input.averageTemperature.textContent = average_temperature.toFixed(1);
+
+                var fuel = calculateFuel(lapsValue, input.weatherSelector.value, parseFloat(input.boostsSelector.value));
+                input.fuel.textContent = fuel.toFixed(1);
+
+                var tyres = calculateTyres(lapsValue, input.tyresSelector.value);
+                input.tyres.textContent = tyres.toFixed(1);
+
+                // var totalLaps = 0;
+                // for (var i = 0; i <= index; i++) {
+                //     totalLaps += parseInt(inputs[i].lapsInput.value);
+                // }
+
+                // if (index > 0) {
+                //     totalLaps = (totalLaps + 1 - parseInt(inputs[index].lapsInput.value)) + " - " + totalLaps;
+                // } else {
+                //     totalLaps = "1 - " + totalLaps;
+                // }
+
+                // input.lapsValue.textContent = totalLaps;
+            }
 
             input.lapsInput.addEventListener("input", function () {
                 var lapsValue = parseInt(input.lapsInput.value);
@@ -780,6 +824,7 @@ input.weatherSelector.addEventListener("change", function () {
 
                 var average_temperature = calculateAverage(temp_for_each_lap, lapsValue);
                 input.averageTemperature.textContent = average_temperature.toFixed(1);
+
 
                 // Obliczanie paliwa
                 var fuel = calculateFuel(lapsValue, input.weatherSelector.value);
@@ -823,6 +868,7 @@ input.weatherSelector.addEventListener("change", function () {
                     temp_for_each_lap.push(q4_max);
                 }
             }
+            console.log("Generated temp_for_each_lap array:", temp_for_each_lap);
             return temp_for_each_lap;
         }
 
@@ -840,22 +886,25 @@ input.weatherSelector.addEventListener("change", function () {
             return sum / totalLaps;
         }
 
-       
+
+
+
+
 
         function calculateFuel(totalLaps, weather, boosts) {
-    var fuel_per_lap;
-    switch (weather) {
-        case "dry":
-            fuel_per_lap = dry_fuel_per_lap;
-            break;
-        case "wet":
-            fuel_per_lap = rain_fuel_per_lap;
-            break;
-        default:
-            fuel_per_lap = 0;
-    }
-    return totalLaps * fuel_per_lap + boosts * lap_length * 0.12;
-}
+            var fuel_per_lap;
+            switch (weather) {
+                case "dry":
+                    fuel_per_lap = dry_fuel_per_lap;
+                    break;
+                case "wet":
+                    fuel_per_lap = rain_fuel_per_lap;
+                    break;
+                default:
+                    fuel_per_lap = 0;
+            }
+            return totalLaps * fuel_per_lap + boosts * lap_length * 0.12;
+        }
 
         function calculateTyres(totalLaps, selectedTyres) {
             var tyres_per_lap;
