@@ -424,7 +424,7 @@
         var lap_length = 5.475;
         var laps = 55
         var race_distance = 301.1;
-        var pit_time_in_out = 0;
+        var pit_time_in_out = 10;
         var tcd = 0.216;
         var dry_fuel_per_km = 0.718;
         var rain_fuel_per_km = 0.502;
@@ -461,36 +461,6 @@
         var q4_max = 21;
         var laps_in_quarter = 29;
         var row1_first_lap = 1;
-
-        // Tworzymy zapytanie HTTP GET do strony internetowej
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://tool.nuvolariracing.com/nstrategy.php', true);
-
-        // Obsługujemy zdarzenie po zakończeniu zapytania
-        xhr.onload = function () {
-            // Sprawdzamy, czy status odpowiedzi jest OK (200)
-            if (xhr.status === 200) {
-                // Parsujemy odpowiedź jako obiekt JSON
-                var data = JSON.parse(xhr.responseText);
-                // Pobieramy wartość laps
-                var laps = data.laps;
-                var pit_time_in_out = data.pit_time_in_out;
-                // Wyświetlamy wartość laps w konsoli
-                console.log("Wartość laps pobrana ze strony: " + laps);
-                // Tutaj możesz przypisać wartość laps do zmiennej lub wykonać inne operacje na niej
-            } else {
-                // Jeśli status odpowiedzi nie jest OK, wyświetlamy błąd
-                console.error('Wystąpił błąd podczas pobierania danych. Status: ' + xhr.status);
-            }
-        };
-
-        // Obsługujemy ewentualne błędy związane z zapytaniem
-        xhr.onerror = function () {
-            console.error('Wystąpił błąd podczas pobierania danych.');
-        };
-
-        // Wysyłamy zapytanie
-        xhr.send();
 
 
         var cells = document.getElementsByTagName("td");
