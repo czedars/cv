@@ -395,6 +395,11 @@
 
 
     <script>
+
+
+
+
+
         // Inicjalizacja zmiennej CT_selected
         let CT_selected = 50;
 
@@ -417,6 +422,26 @@
             updateHardPits();
             updateRainPits();
         });
+
+
+        fetch('https://tool.nuvolariracing.com/nstrategy.php', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                var lap_length = data.lap_length;
+                var laps = data.laps;
+                var race_distance = data.race_distance;
+                var pit_time_in_out = data.pit_time_in_out;
+
+                // Możesz wyświetlić te zmienne lub wykonać inne operacje na nich
+                console.log("lap_length:", lap_length);
+                console.log("laps:", laps);
+                console.log("race_distance:", race_distance);
+                console.log("pit_time_in_out:", pit_time_in_out);
+            })
+            .catch(error => console.error('Błąd pobierania danych:', error));
+
         // zmienne 
 
         var lap_length = 5.475;
@@ -460,6 +485,23 @@
         var laps_in_quarter = 29;
         var row1_first_lap = 1;
 
+        fetch('https://tool.nuvolariracing.com/nstrategy.php', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                var lap_length = data.lap_length;
+                var laps = data.laps;
+                var race_distance = data.race_distance;
+                var pit_time_in_out = data.pit_time_in_out;
+
+                // Możesz wyświetlić te zmienne lub wykonać inne operacje na nich
+                console.log("lap_length:", lap_length);
+                console.log("laps:", laps);
+                console.log("race_distance:", race_distance);
+                console.log("pit_time_in_out:", pit_time_in_out);
+            })
+            .catch(error => console.error('Błąd pobierania danych:', error));
 
 
 
@@ -719,6 +761,52 @@
         }
 
         inputs.forEach(function (input, index) {
+
+            // Dodajemy zdarzenia nasłuchujące na zmiany w kolumnach weather, tyres, laps i boost
+            input.weatherSelector.addEventListener("change", function () {
+                recalculateValues(input);
+            });
+
+            input.tyresSelector.addEventListener("change", function () {
+                recalculateValues(input);
+            });
+
+            input.lapsInput.addEventListener("change", function () {
+                recalculateValues(input);
+            });
+
+            input.boostsSelector.addEventListener("change", function () {
+                recalculateValues(input);
+            });
+
+            // Funkcja recalculateValues będzie wywoływana po każdej zmianie wartości w formularzu
+            function recalculateValues(input) {
+                var lapsValue = parseInt(input.lapsInput.value);
+
+                var temp_for_each_lap = createTempArray(lapsValue);
+                var average_temperature = calculateAverage(temp_for_each_lap, lapsValue);
+                input.averageTemperature.textContent = average_temperature.toFixed(1);
+
+                var fuel = calculateFuel(lapsValue, input.weatherSelector.value);
+                input.fuel.textContent = fuel.toFixed(1);
+
+                var tyres = calculateTyres(lapsValue, input.tyresSelector.value);
+                input.tyres.textContent = tyres.toFixed(1);
+
+                var totalLaps = 0;
+                for (var i = 0; i <= index; i++) {
+                    totalLaps += parseInt(inputs[i].lapsInput.value);
+                }
+
+                if (index > 0) {
+                    totalLaps = (totalLaps + 1 - parseInt(inputs[index].lapsInput.value)) + " - " + totalLaps;
+                } else {
+                    totalLaps = "1 - " + totalLaps;
+                }
+
+                input.lapsValue.textContent = totalLaps;
+            }
+
             input.lapsInput.addEventListener("input", function () {
                 var lapsValue = parseInt(input.lapsInput.value);
                 console.log("Wartość liczby okrążeń:", lapsValue);
